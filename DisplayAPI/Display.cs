@@ -55,6 +55,7 @@ namespace DisplayAPI
             DeviceKey = Device.DeviceKey;
             DeviceState = Device.StateFlags;
             DevMode = Mode.dmFields;
+            Orientation = (Orientations)Mode.dmDisplayOrientation;
         }
 
         public void UpdateValues()
@@ -109,9 +110,27 @@ namespace DisplayAPI
             return result;
         }
 
+        /// <summary>
+        /// Enumerates all connected displays
+        /// </summary>
+        /// <returns></returns>
         public static IEnumerable<Display> EnumerateConnectedDisplays()
         {
-            return null;
+            List<Display> displays = new List<Display>();
+            //sloppy code here, but i can't do otherwise
+            for(uint i = 0; i < 255; i++)
+            {
+                try
+                {
+                    Display d = new Display(i);
+                    displays.Add(d);
+                }
+                catch
+                {
+                    break;
+                }
+            }
+            return displays;
         }
 
 
